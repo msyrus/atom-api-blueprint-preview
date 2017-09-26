@@ -1,14 +1,15 @@
 {
-  "name": "api-blueprint-preview",
+  "name": "atom-api-blueprint-preview",
   "version": "0.7.0",
   "main": "./lib/main",
-  "description": "Open a rendered version of the API Blueprint in the current editor with `ctrl-shift-a`.",
-  "repository": "https://github.com/danielgtaylor/atom-api-blueprint-preview",
+  "description": "Open a rendered version of the API Blueprint in the current editor with `ctrl-shift-a`. Fork of api-blueprint-preview",
+  "repository": "https://github.com/msyrus/atom-api-blueprint-preview",
   "license": "MIT",
   "engines": {
     "atom": "*"
   },
   "dependencies": {
+    "aglio": "^2.3.0",
     "atom-space-pen-views": "^2.0.0",
     "cheerio": "0.15.0",
     "fs-plus": "^2.0.0",
