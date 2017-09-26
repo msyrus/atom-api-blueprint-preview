@@ -1,6 +1,6 @@
 {
   "name": "atom-api-blueprint-preview",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "main": "./lib/main",
   "description": "Open a rendered version of the API Blueprint in the current editor with `ctrl-shift-a`. Fork of api-blueprint-preview",
   "repository": "https://github.com/msyrus/atom-api-blueprint-preview",
