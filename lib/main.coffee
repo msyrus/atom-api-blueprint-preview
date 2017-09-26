@@ -107,7 +107,7 @@ module.exports =
       searchAllPanes: true
     if atom.config.get('api-blueprint-preview.openPreviewInSplitPane')
       options.split = 'right'
-    atom.workspace.open(uri, options).done (apiBlueprintPreviewView) ->
+    atom.workspace.open(uri, options).then (apiBlueprintPreviewView) ->
       if isApiBlueprintPreviewView(apiBlueprintPreviewView)
         previousActivePane.activate()
 
@@ -127,7 +127,7 @@ module.exports =
 
     renderer ?= require './renderer'
     text = editor.getSelectedText() or editor.getText()
-    renderer.toHTML text, editor.getPath(), editor.getGrammar(), (error, html) =>
+    renderer.toHTML text, editor.getPath(), editor.getGrammar(), (error, html)->
       if error
         console.warn('Copying ApiBlueprint as HTML failed', error)
       else

@@ -1,9 +1,9 @@
-{exec} = require 'child_process'
 os = require 'os'
 path = require 'path'
 _ = require 'underscore-plus'
 fs = require 'fs-plus'
 cheerio = require 'cheerio'
+aglio = require 'aglio'
 {$} = require 'atom-space-pen-views'
 
 {resourcePath} = atom.getLoadSettings()
@@ -23,32 +23,19 @@ exports.toHTML = (text='', filePath, grammar, callback) ->
   render text, filePath, callback
 
 render = (text, filePath, callback) ->
-
-  # Use current time and random number to generate a temp file name
-  #   This way each rendering execution have their own unshared temp file
-  #   This avoids error when rendering multiple times in a short period of time.
-  tempFile = path.join(os.tmpdir(), 'atom' + (new Date).getTime() + '_' + Math.floor(Math.random() * 9007199254740991) + '.apib')
-  fs.writeFileSync tempFile, text
-
-  # Env hack... helps find aglio binary
-  newEnv = Object.create(process.env)
-  npm_bin = atom.project.getPaths().map (p) -> path.join(p, 'node_modules', '.bin')
-  newEnv.PATH = npm_bin.concat(newEnv.PATH, '/usr/local/bin').join(path.delimiter)
-
   template = "#{path.dirname __dirname}/templates/api-blueprint-preview.jade"
 
   includePath = path.dirname filePath # for Aglio include directives
 
-  options = {
-      maxBuffer: Infinity # Default: 200*1024, set to Infinity to avoid stdout maxBuffer exceeded
-      env: newEnv # Use the new environment to help find aglio binary
+  opt = {
+    themeTemplate: template
+    includePath: includePath
   }
 
-  exec "aglio -i #{tempFile} -t #{template} -n #{includePath} -o -", options, (err, stdout, stderr) =>
+  aglio.render text, opt, (err, html, warns)->
     if err then return callback(err)
-    console.log stderr
-    fs.removeSync tempFile
-    callback null, resolveImagePaths(stdout, filePath)
+    console.log err
+    callback null, resolveImagePaths(html, filePath)
 
 resolveImagePaths = (html, filePath) ->
   [rootDirectory] = atom.project.relativizePath(filePath)
